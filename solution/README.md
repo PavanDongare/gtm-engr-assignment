@@ -243,6 +243,7 @@ The latest-leads view is implemented now because the stored `decision_log`, flag
 | LLM returns malformed JSON | Retry once; on second failure treated same as HTTP error for that stage |
 | Enrichment file missing | Falls back to `confidence: 0.0`, uses `sector_hint` from lead if present |
 | Lead missing `id` or `company_name` | Flagged `invalid_input`, skipped |
+| Accidental repeat click in one open UI session | `Run Pipeline` is disabled while the current run is starting or processing |
 | Per-lead processing error | Written to DB as `status: 'failed'`; does not affect other leads in the run |
 | DB unavailable at startup | Retries with backoff (10 attempts, 2s interval) |
 
@@ -250,6 +251,7 @@ The latest-leads view is implemented now because the stored `decision_log`, flag
 
 - **Live Companies House integration** — the enrichment module is isolated; swapping the stub for a real API is a one-file change. This unlocks director change checks and real-time company status.
 - **Full config versioning / snapshots** — runs already store a `config_hash`. The next step is storing explicit config versions or full config snapshots so historical results and the `Latest Leads` view can show the exact config that produced a decision.
+- **Backend idempotency for run submission** — the current UI prevents the obvious double-click case in one browser session, but repeated submits across tabs, refreshes, or direct API calls still create new runs. The next step is an idempotency key or short-window duplicate-run suppression on `POST /runs`.
 - **Queue-based processing** — for larger batches, `POST /runs` becomes a job producer and worker processes consume per-lead jobs from Redis/BullMQ or SQS. The DB schema needs no changes.
 - **Feedback loop** — capture sales outcomes (contacted / converted / declined) and link them back to pipeline runs. This closes the loop for calibrating score weights and eventually replacing the heuristic ICP score with a trained model.
 - **GDPR-compliant PII handling** — field-level encryption for contact name, defined retention policy, right-to-erasure. Pre-production requirement for a financial services context.
