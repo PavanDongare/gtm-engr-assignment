@@ -4,6 +4,11 @@
 
 **Requirements:** Docker, Docker Compose, an [OpenRouter](https://openrouter.ai) API key.
 
+**Hosted deployment:**
+
+- App: `https://gtm.pavandongare.com`
+- Supabase Studio: `https://gtm-studio.pavandongare.com` (protected behind server-side basic auth)
+
 ```bash
 cd solution
 cp .env.example .env

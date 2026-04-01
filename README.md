@@ -9,6 +9,11 @@ I kept the implementation isolated there because I used a separate stack from th
 - [`solution/README.md`](solution/README.md)
 - [`solution/docker-compose.yml`](solution/docker-compose.yml)
 
+Hosted URLs:
+
+- App: `https://gtm.pavandongare.com`
+- Studio: `https://gtm-studio.pavandongare.com`
+
 Everything else in this root repo is the provided assignment material unless explicitly referenced from `solution/`.
 
 ## Context
