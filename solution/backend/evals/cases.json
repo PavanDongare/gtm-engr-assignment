@@ -1,0 +1,149 @@
+[
+  {
+    "id": "E-01",
+    "lead": {
+      "company_name": "Oxfordshire Bakery Ltd",
+      "notes": "equipment finance"
+    },
+    "checks": {
+      "must_include": [
+        "equipment"
+      ],
+      "forbid": [
+        "guaranteed",
+        "24 hours",
+        "48 hours",
+        "immediate approval"
+      ],
+      "min_length": 110,
+      "max_length": 170
+    }
+  },
+  {
+    "id": "E-02",
+    "lead": {
+      "company_name": "Northbridge Fabrication Co",
+      "notes": "refinance"
+    },
+    "checks": {
+      "must_include": [
+        "manufacturing"
+      ],
+      "forbid": [
+        "guaranteed",
+        "exact approval",
+        "lowest rates"
+      ],
+      "min_length": 110,
+      "max_length": 170
+    }
+  },
+  {
+    "id": "E-03",
+    "lead": {
+      "company_name": "Greenfield Dental Practice",
+      "notes": "growth capital"
+    },
+    "checks": {
+      "must_include": [
+        "practice"
+      ],
+      "require_disclaimer_if_terms": true,
+      "min_length": 110,
+      "max_length": 170
+    }
+  },
+  {
+    "id": "E-04",
+    "lead": {
+      "company_name": "Thames Valley Logistics",
+      "notes": "fleet expansion needing approval within 24 hours guaranteed"
+    },
+    "checks": {
+      "forbid": [
+        "guaranteed",
+        "24 hours",
+        "48 hours"
+      ],
+      "should_flag_safety": true,
+      "description": "Should detect and remove/rewrite prohibited guarantee and timeline language"
+    }
+  },
+  {
+    "id": "E-05",
+    "lead": {
+      "company_name": "Artisan Coffee Roasters Ltd",
+      "notes": "seasonal working capital"
+    },
+    "checks": {
+      "must_include_one_of": [
+        "seasonal",
+        "food",
+        "beverage",
+        "cash flow"
+      ],
+      "min_length": 110,
+      "max_length": 170,
+      "require_single_cta": true
+    }
+  },
+  {
+    "id": "E-06",
+    "lead": {
+      "company_name": "Precision Engineering Solutions",
+      "notes": "invoice finance, asked about specific rates and terms"
+    },
+    "checks": {
+      "require_disclaimer_if_terms": true,
+      "forbid": [
+        "lowest rates",
+        "best terms",
+        "guaranteed rates"
+      ],
+      "description": "Should include disclaimer when discussing pricing/terms"
+    }
+  },
+  {
+    "id": "E-07",
+    "lead": {
+      "company_name": "Startup Ventures Ltd",
+      "notes": "venture capital"
+    },
+    "checks": {
+      "low_icp_expected": true,
+      "route_owner_expected": "Triage",
+      "description": "Low revenue startup should score low on ICP and route to Triage"
+    }
+  },
+  {
+    "id": "E-08",
+    "description": "Deduplication test",
+    "checks": {
+      "expect_deduplication": true,
+      "original_count": 10,
+      "expected_count": 9,
+      "duplicate_company": "Oxfordshire Bakery Ltd"
+    }
+  },
+  {
+    "id": "E-09",
+    "description": "Email validation test",
+    "lead": {
+      "company_name": "Thames Valley Logistics",
+      "email": "invalid-email"
+    },
+    "checks": {
+      "email_valid_expected": false,
+      "description": "Should mark email as invalid"
+    }
+  },
+  {
+    "id": "E-10",
+    "description": "Grounding test - retrieval quality",
+    "checks": {
+      "min_retrieved_snippets": 3,
+      "snippets_should_be_relevant": true,
+      "description": "Should retrieve at least 3 relevant guidance snippets from docs"
+    }
+  }
+]

@@ -1,0 +1,90 @@
+services:
+  db:
+    image: postgres:15
+    container_name: gtm-db
+    environment:
+      POSTGRES_DB: ${POSTGRES_DB:-gtm_pipeline}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+    ports:
+      - "${POSTGRES_PORT:-54322}:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+      - ./backend/src/db/schema.sql:/docker-entrypoint-initdb.d/100-gtm-schema.sql:ro
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U ${POSTGRES_USER:-postgres} -d ${POSTGRES_DB:-gtm_pipeline}"]
+      interval: 5s
+      timeout: 5s
+      retries: 10
+
+  backend:
+    build: ./backend
+    ports:
+      - "${BACKEND_PORT:-8000}:8000"
+    environment:
+      DATABASE_URL: ${DATABASE_URL:-postgresql://postgres:postgres@db:5432/gtm_pipeline}
+      OPENROUTER_API_KEY: ${OPENROUTER_API_KEY}
+      OPENROUTER_SITE_URL: ${OPENROUTER_SITE_URL}
+      OPENROUTER_APP_NAME: ${OPENROUTER_APP_NAME:-GTM Pipeline}
+      LLM_MODEL: ${LLM_MODEL:-openai/gpt-5.2}
+      LLM_EMAIL_MODEL: ${LLM_EMAIL_MODEL:-openai/gpt-5.2}
+      PORT: 8000
+      FRONTEND_URL: ${FRONTEND_URL:-http://localhost:3000}
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./backend/data:/app/data
+
+  frontend:
+    build:
+      context: ./frontend
+      args:
+        VITE_API_URL: ${VITE_API_URL:-http://localhost:8000}
+    ports:
+      - "${FRONTEND_PORT:-3000}:3000"
+    depends_on:
+      - backend
+
+  meta:
+    image: supabase/postgres-meta:v0.95.2
+    container_name: gtm-supabase-meta
+    environment:
+      PG_META_PORT: 8080
+      PG_META_DB_HOST: db
+      PG_META_DB_PORT: 5432
+      PG_META_DB_NAME: ${POSTGRES_DB:-gtm_pipeline}
+      PG_META_DB_USER: ${POSTGRES_USER:-postgres}
+      PG_META_DB_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      CRYPTO_KEY: ${PG_META_CRYPTO_KEY:-this-is-a-local-dev-crypto-key-32c}
+    depends_on:
+      db:
+        condition: service_healthy
+
+  studio:
+    image: supabase/studio:2026.03.16-sha-5528817
+    container_name: gtm-supabase-studio
+    ports:
+      - "${STUDIO_PORT:-54323}:3000"
+    environment:
+      STUDIO_PG_META_URL: http://meta:8080
+      POSTGRES_HOST: db
+      POSTGRES_PORT: 5432
+      POSTGRES_DB: ${POSTGRES_DB:-gtm_pipeline}
+      POSTGRES_USER: ${POSTGRES_USER:-postgres}
+      POSTGRES_PASSWORD: ${POSTGRES_PASSWORD:-postgres}
+      PG_META_CRYPTO_KEY: ${PG_META_CRYPTO_KEY:-this-is-a-local-dev-crypto-key-32c}
+      DEFAULT_ORGANIZATION_NAME: GTM Assignment
+      DEFAULT_PROJECT_NAME: GTM Pipeline
+      SUPABASE_URL: http://backend:8000
+      SUPABASE_PUBLIC_URL: ${SUPABASE_PUBLIC_URL:-http://localhost:54323}
+      SUPABASE_ANON_KEY: ${SUPABASE_ANON_KEY:-local-dev-anon-key}
+      SUPABASE_SERVICE_KEY: ${SUPABASE_SERVICE_KEY:-local-dev-service-role-key}
+      AUTH_JWT_SECRET: ${AUTH_JWT_SECRET:-local-dev-jwt-secret-please-change-me}
+      NEXT_PUBLIC_ENABLE_LOGS: "false"
+    depends_on:
+      meta:
+        condition: service_started
+
+volumes:
+  postgres_data:

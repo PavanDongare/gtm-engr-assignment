@@ -1,0 +1,89 @@
+{
+  "Oxfordshire Bakery Ltd": {
+    "company_number": "08976543",
+    "status": "active",
+    "sic_codes": [
+      "10710"
+    ],
+    "registered_address": "12 High St, Oxford OX1 1AA",
+    "incorporated_on": "2014-05-12"
+  },
+  "Northbridge Fabrication Co": {
+    "company_number": "06321058",
+    "status": "active",
+    "sic_codes": [
+      "25110",
+      "25620"
+    ],
+    "registered_address": "Unit 4, Foundry Park, Leeds LS10 1AB",
+    "incorporated_on": "2007-08-02"
+  },
+  "Greenfield Dental Practice": {
+    "company_number": "07123456",
+    "status": "active",
+    "sic_codes": [
+      "86230"
+    ],
+    "registered_address": "2 The Parade, Bristol BS1 5AA",
+    "incorporated_on": "2010-02-03"
+  },
+  "Thames Valley Logistics": {
+    "company_number": "09345678",
+    "status": "active",
+    "sic_codes": [
+      "49410",
+      "52101"
+    ],
+    "registered_address": "Gateway Business Park, Reading RG2 0PT",
+    "incorporated_on": "2015-03-20"
+  },
+  "Artisan Coffee Roasters Ltd": {
+    "company_number": "11234567",
+    "status": "active",
+    "sic_codes": [
+      "10830",
+      "46370"
+    ],
+    "registered_address": "5 Market Square, Brighton BN1 1HG",
+    "incorporated_on": "2018-09-15"
+  },
+  "Precision Engineering Solutions": {
+    "company_number": "05678901",
+    "status": "active",
+    "sic_codes": [
+      "25620",
+      "28990"
+    ],
+    "registered_address": "Industrial Estate Unit 12, Birmingham B6 7DB",
+    "incorporated_on": "2005-11-08"
+  },
+  "Startup Ventures Ltd": {
+    "company_number": "13456789",
+    "status": "active",
+    "sic_codes": [
+      "62012",
+      "64999"
+    ],
+    "registered_address": "Tech Hub, 123 Silicon Road, London EC2A 4NE",
+    "incorporated_on": "2021-06-01"
+  },
+  "Countryside Veterinary Clinic": {
+    "company_number": "08765432",
+    "status": "active",
+    "sic_codes": [
+      "75000"
+    ],
+    "registered_address": "The Old Farm, Cotswolds GL54 1BN",
+    "incorporated_on": "2013-04-22"
+  },
+  "Heritage Construction Ltd": {
+    "company_number": "04567890",
+    "status": "active",
+    "sic_codes": [
+      "41201",
+      "43999"
+    ],
+    "registered_address": "Builder's Yard, Manchester M1 3BB",
+    "incorporated_on": "2002-07-14"
+  }
+}

@@ -1,0 +1,139 @@
+{
+  "name": "Default",
+  "heuristics": {
+    "revenue": {
+      "hard_gate_min_gbp": 500000,
+      "max_revenue_gbp": 50000000,
+      "bands": [
+        { "min": 0,        "max": 499999,   "fraction": 0.0, "label": "below_target" },
+        { "min": 500000,   "max": 999999,   "fraction": 0.2, "label": "borderline" },
+        { "min": 1000000,  "max": 9999999,  "fraction": 0.8, "label": "target" },
+        { "min": 10000000, "max": 49999999, "fraction": 1.0, "label": "strong" },
+        { "min": 50000000, "max": null,     "fraction": 0.4, "label": "edge_case" }
+      ]
+    },
+    "company_age_years": {
+      "min_trading_years": 2,
+      "bands": [
+        { "min": 0,   "max": 1.99, "fraction": 0.0, "flag": true,  "label": "too_young" },
+        { "min": 2,   "max": 4.99, "fraction": 0.5, "flag": false, "label": "young" },
+        { "min": 5,   "max": null, "fraction": 1.0, "flag": false, "label": "established" }
+      ]
+    },
+    "email_word_count": { "min": 110, "max": 170 },
+    "score_weights": {
+      "revenue": 0.5,
+      "sector": 0.3,
+      "company_age": 0.2
+    },
+    "unverified_revenue_multiplier": 0.85,
+    "dedup_similarity_threshold": 0.85,
+    "cache_ttl_days": 30,
+    "llm_concurrency_limit": 3,
+    "routing": {
+      "high_threshold": 0.5,
+      "low_threshold": 0.3
+    },
+    "prohibited_phrases_regex": [
+      "guaranteed approval",
+      "guaranteed",
+      "approval within 24",
+      "approval within 48",
+      "24 hours",
+      "48 hours",
+      "lowest rates",
+      "best rates",
+      "best terms",
+      "guaranteed rates",
+      "certain to",
+      "definitely approve"
+    ]
+  },
+  "compliance": {
+    "declined_statuses": [
+      "in-administration",
+      "administration",
+      "liquidation",
+      "in-liquidation",
+      "dissolved",
+      "receivership",
+      "voluntary-arrangement"
+    ],
+    "eligible_company_types": [
+      "limited",
+      "ltd",
+      "llp",
+      "plc",
+      "limited liability partnership"
+    ],
+    "pricing_trigger_words": [
+      "rate", "rates", "interest", "pricing", "price",
+      "terms", "cost", "fee", "fees", "repayment", "repayments"
+    ],
+    "required_disclaimer": "Subject to status and credit checks"
+  },
+  "sic_to_sector": {
+    "10710": "Food & Beverage",
+    "10830": "Food & Beverage",
+    "46370": "Food & Beverage",
+    "25110": "Manufacturing",
+    "25620": "Manufacturing",
+    "28990": "Manufacturing",
+    "75000": "Healthcare",
+    "86230": "Healthcare",
+    "49410": "Logistics",
+    "52101": "Logistics",
+    "41201": "Construction",
+    "43999": "Construction",
+    "62012": "Technology",
+    "64999": "Technology"
+  },
+  "llm_context": {
+    "good_sectors": [
+      "Manufacturing",
+      "Healthcare",
+      "Construction",
+      "Logistics",
+      "Food & Beverage"
+    ],
+    "poor_sectors": [
+      "Technology",
+      "Startup"
+    ],
+    "red_flag_examples": [
+      "guaranteed approval",
+      "approval within 24 hours",
+      "needs certainty of funding before proceeding",
+      "told yes by another lender already",
+      "looking for venture capital or equity investment",
+      "looking for a government grant",
+      "mentioned outstanding County Court Judgments",
+      "CCJ or court judgment in the last year",
+      "behind on existing loan repayments",
+      "needs this urgently with no flexibility on timeline",
+      "expects 0% or near-zero interest rate",
+      "company under administration or being wound up",
+      "director recently resigned or charged with fraud",
+      "significant change in company directors recently",
+      "dispute or mismatch between directors and the person making the enquiry"
+    ],
+    "sector_product_hints": {
+      "Manufacturing": "asset-backed lending and invoice finance to smooth cash flow and fund equipment upgrades or capacity expansion",
+      "Healthcare": "flexible equipment finance and practice growth support, with dedicated account management and experience in professional practice lending",
+      "Food & Beverage": "seasonal cash-flow options and predictable repayment structures designed around the rhythms of food and beverage businesses",
+      "Construction": "project-based lending, equipment finance, and property development facilities structured around contract timelines",
+      "Logistics": "fleet financing and working capital facilities to support expansion and manage the gap between invoicing and payment",
+      "default": "tailored lending solutions for established UK businesses, with a focus on flexibility and understanding your specific sector"
+    },
+    "prohibited_output_examples": [
+      "we can have this sorted by end of week",
+      "this should be straightforward to approve",
+      "we can get this moving quickly for you",
+      "approval should be no problem",
+      "we can almost certainly help with this",
+      "this looks like a strong application",
+      "I'm confident we can do something here",
+      "we should be able to turn this around fast"
+    ]
+  }
+}

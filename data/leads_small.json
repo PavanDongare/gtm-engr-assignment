@@ -1,0 +1,109 @@
+[
+  {
+    "id": "L-2001",
+    "company_name": "Oxfordshire Bakery Ltd",
+    "contact_name": "Amelia Shaw",
+    "email": "amelia.shaw@example.com",
+    "website": "https://oxonbakery.example",
+    "employees": 18,
+    "annual_revenue_gbp": 1800000,
+    "notes": "Inbound form: equipment upgrade financing."
+  },
+  {
+    "id": "L-2002",
+    "company_name": "Northbridge Fabrication Co",
+    "contact_name": "Harjit Singh",
+    "email": "harjit@northbridgefab.example",
+    "website": "http://northbridgefab.example",
+    "employees": 42,
+    "annual_revenue_gbp": 5200000,
+    "notes": "Broker referral: refinance existing loans."
+  },
+  {
+    "id": "L-2003",
+    "company_name": "Greenfield Dental Practice",
+    "contact_name": "Dr. Priya Desai",
+    "email": "p.desai@greenfielddental.example",
+    "website": "https://greenfielddental.example",
+    "employees": 12,
+    "annual_revenue_gbp": 1400000,
+    "notes": "Inbound phone: growth capital for new surgery room.",
+    "sector_hint": "Healthcare"
+  },
+  {
+    "id": "L-2004",
+    "company_name": "Oxfordshire Bakery Ltd",
+    "contact_name": "Amelia Shaw",
+    "email": "amelia.shaw@example.com",
+    "website": "https://oxonbakery.example",
+    "employees": 18,
+    "annual_revenue_gbp": 1800000,
+    "notes": "Duplicate entry: should be deduplicated."
+  },
+  {
+    "id": "L-2005",
+    "company_name": "Thames Valley Logistics",
+    "contact_name": "Marcus Thompson",
+    "email": "invalid-email",
+    "website": "https://tvlogistics.example",
+    "employees": 65,
+    "annual_revenue_gbp": 8500000,
+    "notes": "Inbound: fleet expansion and working capital. Mentioned needing approval within 24 hours guaranteed.",
+    "sector_hint": "Logistics"
+  },
+  {
+    "id": "L-2006",
+    "company_name": "Artisan Coffee Roasters Ltd",
+    "contact_name": "Sarah Chen",
+    "email": "sarah@artisancoffee.example",
+    "website": "https://artisancoffee.example",
+    "employees": 8,
+    "annual_revenue_gbp": 650000,
+    "notes": "Web enquiry: seasonal working capital for stock purchase.",
+    "sector_hint": "Food & Beverage"
+  },
+  {
+    "id": "L-2007",
+    "company_name": "Precision Engineering Solutions",
+    "contact_name": "David Walsh",
+    "email": "d.walsh@precision-eng.example",
+    "website": "https://precision-eng.example",
+    "employees": 28,
+    "annual_revenue_gbp": 3200000,
+    "notes": "Partner referral: invoice finance to smooth cash flow. Asked about specific rates and terms.",
+    "sector_hint": "Manufacturing"
+  },
+  {
+    "id": "L-2008",
+    "company_name": "Startup Ventures Ltd",
+    "contact_name": "Alex Rivera",
+    "email": "alex@startup-ventures.example",
+    "website": "https://startup-ventures.example",
+    "employees": 5,
+    "annual_revenue_gbp": 200000,
+    "notes": "Cold outreach: looking for venture capital.",
+    "sector_hint": "Technology"
+  },
+  {
+    "id": "L-2009",
+    "company_name": "Countryside Veterinary Clinic",
+    "contact_name": "Dr. Emily Foster",
+    "email": "emily.foster@countryside-vet.example",
+    "website": "https://countryside-vet.example",
+    "employees": 15,
+    "annual_revenue_gbp": 1900000,
+    "notes": "Inbound: new equipment and facility expansion.",
+    "sector_hint": "Healthcare"
+  },
+  {
+    "id": "L-2010",
+    "company_name": "Heritage Construction Ltd",
+    "contact_name": "James O'Brien",
+    "email": "james@heritage-construction.example",
+    "website": "https://heritage-construction.example",
+    "employees": 85,
+    "annual_revenue_gbp": 12000000,
+    "notes": "Broker lead: property development financing.",
+    "sector_hint": "Construction"
+  }
+]

@@ -1,0 +1,17 @@
+__pycache__/
+*.py[cod]
+*$py.class
+.venv/
+venv/
+env/
+.env
+.env.local
+.DS_Store
+*.log
+.vercel
+node_modules/
+notes/
+dist/
+build/
+.idea/
+.vscode/
