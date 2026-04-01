@@ -209,7 +209,14 @@ Red flags detected in the notes route to Manual Review regardless of ICP score. 
 
 Each lead makes between 1 and 4 LLM calls depending on how far it progresses. Holding an HTTP connection open while processing 10 leads is impractical — at 2–15 seconds per call, a synchronous endpoint would routinely timeout.
 
-`POST /runs` returns a run ID immediately with HTTP 202. The pipeline runs in the background, writing each lead's result to the database as it completes. The frontend polls `GET /runs/:id` every 2 seconds — lead cards populate as results arrive. A partial run is recoverable: if the server crashes mid-run, completed results are already persisted.
+The brief asks for a single `POST` entrypoint. The implementation keeps that simple API surface, but treats the request as the start of a longer-running job rather than forcing the client to wait for the whole batch. `POST /runs` returns a run ID immediately with HTTP 202. The pipeline runs in the background, writing each lead's result to the database as it completes. The frontend polls `GET /runs/:id` every 2 seconds so lead cards populate incrementally instead of waiting for the slowest LLM call in the batch. A partial run is recoverable: if the server crashes mid-run, completed results are already persisted.
+
+The efficiency improvement is twofold:
+
+- **Concurrency is used** so independent leads do not wait on each other unnecessarily.
+- **Concurrency is capped** (`llm_concurrency_limit`, default `3`) so the system does not fan out dozens of simultaneous LLM calls and immediately run into provider rate limits or unstable latency.
+
+If this had been implemented as one synchronous `POST /run` that waited for the final response, even a moderate batch would produce poor UX and unreliable request times. The current shape keeps the API simple while making the user experience practical.
 
 ### Safety and Compliance
 
@@ -251,6 +258,7 @@ The latest-leads view is implemented now because the stored `decision_log`, flag
 
 - **Live Companies House integration** — the enrichment module is isolated; swapping the stub for a real API is a one-file change. This unlocks director change checks and real-time company status.
 - **Full config versioning / snapshots** — runs already store a `config_hash`. The next step is storing explicit config versions or full config snapshots so historical results and the `Latest Leads` view can show the exact config that produced a decision.
+- **Push-based progress updates instead of polling** — the current UI polls because it is the simplest reliable review-time implementation. At larger scale, the backend should publish run progress via Server-Sent Events or WebSockets so the frontend is notified as leads complete rather than repeatedly polling `GET /runs/:id`.
 - **Backend idempotency for run submission** — the current UI prevents the obvious double-click case in one browser session, but repeated submits across tabs, refreshes, or direct API calls still create new runs. The next step is an idempotency key or short-window duplicate-run suppression on `POST /runs`.
 - **Queue-based processing** — for larger batches, `POST /runs` becomes a job producer and worker processes consume per-lead jobs from Redis/BullMQ or SQS. The DB schema needs no changes.
 - **Feedback loop** — capture sales outcomes (contacted / converted / declined) and link them back to pipeline runs. This closes the loop for calibrating score weights and eventually replacing the heuristic ICP score with a trained model.
@@ -415,7 +423,7 @@ The brief asked for a "small, runnable service" and noted a static HTML page was
 
 ---
 
-### ❌ What was not implemented — and the honest reason
+### ❌ What was not implemented — and the reason
 
 **Five eligibility rules from `docs/eligibility.md` are not automatically enforced:**
 
