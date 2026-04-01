@@ -126,6 +126,16 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
         </button>
       </div>
 
+      {showJson && (
+        <Section title="API JSON">
+          <div className="rounded border border-stone-200 bg-stone-950 p-3">
+            <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-stone-100">
+              {JSON.stringify(result, null, 2)}
+            </pre>
+          </div>
+        </Section>
+      )}
+
       {/* Operator Override */}
       {result.result_id && runId && (
         <Section title="Operator Actions">
@@ -303,16 +313,6 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
           <p className="text-sm text-gray-500 italic bg-red-50 rounded p-3">
             No email drafted — {result.routing === 'Declined' ? 'lead automatically declined.' : 'human review required before any outreach.'}
           </p>
-        </Section>
-      )}
-
-      {showJson && (
-        <Section title="API JSON">
-          <div className="rounded border border-stone-200 bg-stone-950 p-3">
-            <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-stone-100">
-              {JSON.stringify(result, null, 2)}
-            </pre>
-          </div>
         </Section>
       )}
     </div>
