@@ -101,7 +101,7 @@ function OverrideForm({ result, runId, onOverride }) {
   )
 }
 
-export default function LeadDetail({ result, runId, onOverride }) {
+export default function LeadDetail({ result, runId, onOverride, showJson = false, onToggleJson }) {
   const [showOverrideForm, setShowOverrideForm] = useState(false)
 
   if (!result) return null
@@ -116,6 +116,15 @@ export default function LeadDetail({ result, runId, onOverride }) {
 
   return (
     <div className="space-y-4">
+      <div className="flex items-center justify-end">
+        <button
+          type="button"
+          onClick={onToggleJson}
+          className="text-xs text-stone-600 underline underline-offset-2 hover:text-stone-900"
+        >
+          {showJson ? 'Hide API JSON' : 'Show API JSON'}
+        </button>
+      </div>
 
       {/* Operator Override */}
       {result.result_id && runId && (
@@ -294,6 +303,16 @@ export default function LeadDetail({ result, runId, onOverride }) {
           <p className="text-sm text-gray-500 italic bg-red-50 rounded p-3">
             No email drafted — {result.routing === 'Declined' ? 'lead automatically declined.' : 'human review required before any outreach.'}
           </p>
+        </Section>
+      )}
+
+      {showJson && (
+        <Section title="API JSON">
+          <div className="rounded border border-stone-200 bg-stone-950 p-3">
+            <pre className="max-h-[28rem] overflow-auto whitespace-pre-wrap break-all text-xs leading-6 text-stone-100">
+              {JSON.stringify(result, null, 2)}
+            </pre>
+          </div>
         </Section>
       )}
     </div>

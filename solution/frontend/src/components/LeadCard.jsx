@@ -51,6 +51,7 @@ function PendingRow({ result }) {
 
 export default function LeadCard({ result, runId, onOverride }) {
   const [expanded, setExpanded] = useState(false)
+  const [showJson, setShowJson] = useState(false)
 
   if (!result) return null
   if (result.status === 'pending') return <PendingRow result={result} />
@@ -98,6 +99,23 @@ export default function LeadCard({ result, runId, onOverride }) {
           </div>
         </div>
         <div className="flex items-center gap-4 ml-4 flex-shrink-0">
+          {!isSkipped && (
+            <button
+              type="button"
+              onClick={(e) => {
+                e.stopPropagation()
+                setExpanded(true)
+                setShowJson(v => !v)
+              }}
+              className={`rounded border px-2 py-1 text-[11px] font-medium transition-colors ${
+                showJson
+                  ? 'border-stone-300 bg-stone-900 text-white'
+                  : 'border-stone-200 bg-white text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+              }`}
+            >
+              API JSON
+            </button>
+          )}
           <div className="text-right">
             <div className="text-xs text-gray-400">ICP Score</div>
             <ScoreBadge score={result.icp_score} />
@@ -113,7 +131,13 @@ export default function LeadCard({ result, runId, onOverride }) {
 
       {expanded && !isSkipped && (
         <div className="border-t px-4 py-4">
-          <LeadDetail result={result} runId={runId} onOverride={onOverride} />
+          <LeadDetail
+            result={result}
+            runId={runId}
+            onOverride={onOverride}
+            showJson={showJson}
+            onToggleJson={() => setShowJson(v => !v)}
+          />
         </div>
       )}
     </div>
