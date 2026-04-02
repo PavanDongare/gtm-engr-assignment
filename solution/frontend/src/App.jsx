@@ -63,9 +63,9 @@ export default function App() {
 
   return (
     <div className="min-h-screen bg-stone-100 text-stone-900">
-      <div className="mx-auto flex min-h-screen max-w-7xl">
-        <aside className="w-72 border-r border-stone-200 bg-white px-5 py-6">
-          <div className="mb-8">
+      <div className="mx-auto flex min-h-screen max-w-7xl flex-col lg:flex-row">
+        <aside className="border-b border-stone-200 bg-white px-4 py-5 lg:w-72 lg:flex-shrink-0 lg:border-b-0 lg:border-r lg:px-5 lg:py-6">
+          <div className="mb-5 lg:mb-8">
             <div className="text-[11px] uppercase tracking-[0.22em] text-stone-400">Allica Bank</div>
             <div className="mt-2 text-2xl font-semibold text-stone-950">GTM Pipeline Console</div>
             <p className="mt-2 text-sm leading-6 text-stone-500">
@@ -73,12 +73,12 @@ export default function App() {
             </p>
           </div>
 
-          <nav className="space-y-1">
+          <nav className="-mx-4 flex gap-1 overflow-x-auto px-4 pb-1 lg:mx-0 lg:block lg:space-y-1 lg:overflow-visible lg:px-0">
             {NAV_ITEMS.map(item => (
               <button
                 key={item.id}
                 onClick={() => selectItem(item)}
-                className={`w-full rounded-md px-4 py-2.5 text-left text-sm transition-colors ${itemClass(item)}`}
+                className={`shrink-0 whitespace-nowrap rounded-md px-4 py-2.5 text-left text-sm transition-colors lg:block lg:w-full lg:whitespace-normal ${itemClass(item)}`}
               >
                 {item.label}
               </button>
@@ -86,7 +86,7 @@ export default function App() {
           </nav>
         </aside>
 
-        <main className="flex-1 px-8 py-8">
+        <main className="flex-1 px-4 py-5 sm:px-6 sm:py-6 lg:px-8 lg:py-8">
           {tab === 'run' && <RunTab />}
           {tab === 'latest' && <LatestLeadsTab />}
           {tab === 'history' && <HistoryTab />}

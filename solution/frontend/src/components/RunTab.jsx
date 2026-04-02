@@ -82,7 +82,7 @@ export default function RunTab() {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">Process Leads</h2>
           <p className="text-sm text-gray-500 mt-0.5">Paste a JSON array of leads, upload a file, or leave empty to run the sample dataset.</p>
@@ -90,9 +90,9 @@ export default function RunTab() {
       </div>
 
       <div className="mb-4">
-        <div className="flex items-center justify-between mb-1">
+        <div className="mb-1 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
           <label className="text-sm font-medium text-gray-700">Leads JSON</label>
-          <div className="flex items-center gap-3">
+          <div className="flex flex-wrap items-center gap-3">
             <button
               onClick={() => fileRef.current?.click()}
               className="text-sm text-stone-600 hover:text-stone-900 underline"
@@ -117,11 +117,11 @@ export default function RunTab() {
         {parseError && <p className="text-xs text-red-500 mt-1">{parseError}</p>}
       </div>
 
-      <div className="flex justify-end mb-6">
+      <div className="mb-6 flex justify-stretch sm:justify-end">
         <button
           onClick={startRun}
           disabled={loading || isProcessing}
-          className="px-4 py-2 bg-stone-900 text-white rounded-md text-sm font-medium hover:bg-stone-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+          className="w-full px-4 py-2 bg-stone-900 text-white rounded-md text-sm font-medium hover:bg-stone-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors sm:w-auto"
         >
           {loading ? 'Starting…' : isProcessing ? 'Processing…' : 'Run Pipeline'}
         </button>
@@ -134,7 +134,7 @@ export default function RunTab() {
       )}
 
       {run && (
-        <div className="mb-4 flex items-center gap-3 text-sm text-gray-500">
+        <div className="mb-4 flex flex-wrap items-center gap-3 text-sm text-gray-500">
           <span>Run {run.run_id?.slice(0, 8)}…</span>
           <span className={`px-2 py-0.5 rounded-full text-xs font-medium ${
             run.status === 'completed' ? 'bg-green-100 text-green-700' :

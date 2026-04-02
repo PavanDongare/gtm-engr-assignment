@@ -16,9 +16,9 @@ function Section({ title, children }) {
 function KV({ label, value, mono }) {
   if (value === null || value === undefined || value === '') return null
   return (
-    <div className="flex gap-2 text-sm mb-1">
-      <span className="text-gray-500 min-w-[160px] flex-shrink-0">{label}</span>
-      <span className={`text-gray-900 ${mono ? 'font-mono text-xs' : ''}`}>{String(value)}</span>
+    <div className="mb-1 flex flex-col gap-1 text-sm sm:flex-row sm:gap-2">
+      <span className="text-gray-500 sm:min-w-[160px] sm:flex-shrink-0">{label}</span>
+      <span className={`break-words text-gray-900 ${mono ? 'font-mono text-xs' : ''}`}>{String(value)}</span>
     </div>
   )
 }
@@ -116,7 +116,7 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
 
   return (
     <div className="space-y-4">
-      <div className="flex items-center justify-end">
+      <div className="flex items-center justify-start sm:justify-end">
         <button
           type="button"
           onClick={onToggleJson}
@@ -141,7 +141,7 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
         <Section title="Operator Actions">
           {override ? (
             <div className="bg-purple-50 border border-purple-200 rounded p-3 space-y-1">
-              <div className="flex items-center justify-between">
+              <div className="flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
                 <span className="text-xs font-semibold text-purple-700">Decision overridden</span>
                 <button
                   onClick={() => setShowOverrideForm(f => !f)}
@@ -236,7 +236,7 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
       {score_breakdown && (
         <Section title="ICP Score Breakdown">
           <div className="bg-gray-50 rounded p-3">
-            <div className="grid grid-cols-3 gap-2 mb-3">
+            <div className="mb-3 grid grid-cols-1 gap-2 sm:grid-cols-3">
               {[
                 { label: 'Revenue', value: score_breakdown.revenue, weight: '50%' },
                 { label: 'Sector', value: score_breakdown.sector, weight: '30%' },
@@ -248,11 +248,10 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
                 </div>
               ))}
             </div>
-            <div className="text-sm text-gray-600 space-y-1">
+            <div className="flex flex-wrap gap-2 text-sm text-gray-600">
               <span className={`text-xs px-2 py-0.5 rounded ${score_breakdown.revenue_verified ? 'bg-green-50 text-green-700' : 'bg-yellow-50 text-yellow-700'}`}>
                 Revenue {score_breakdown.revenue_verified ? 'verified' : 'unverified (15% discount applied)'}
               </span>
-              {' '}
               <span className={`text-xs px-2 py-0.5 rounded ${score_breakdown.age_available ? 'bg-green-50 text-green-700' : 'bg-gray-100 text-gray-500'}`}>
                 Age {score_breakdown.age_available ? 'available' : 'unavailable (scored 0)'}
               </span>
@@ -272,8 +271,8 @@ export default function LeadDetail({ result, runId, onOverride, showJson = false
       {email && (
         <Section title="First-Touch Email Draft">
           <div className={`rounded border p-3 ${email.safety_passed ? 'border-green-200 bg-green-50' : 'border-red-200 bg-red-50'}`}>
-            <div className="flex items-center justify-between mb-2">
-              <span className="text-xs font-medium text-gray-600">Subject: {email.subject}</span>
+            <div className="mb-2 flex flex-col gap-2 sm:flex-row sm:items-center sm:justify-between">
+              <span className="text-xs font-medium text-gray-600 break-words">Subject: {email.subject}</span>
               <span className={`text-xs px-2 py-0.5 rounded-full ${
                 email.safety_check_incomplete ? 'bg-yellow-100 text-yellow-700' :
                 email.safety_passed ? 'bg-green-100 text-green-700' : 'bg-red-100 text-red-700'

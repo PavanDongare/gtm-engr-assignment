@@ -15,10 +15,10 @@ function Section({ title, description, children }) {
 
 function ReadOnlyField({ label, value, badge = 'engineer-only' }) {
   return (
-    <div className="flex items-start gap-3 py-2 border-b last:border-0">
-      <span className="text-sm text-gray-500 w-48 flex-shrink-0">{label}</span>
-      <span className="text-sm text-gray-400 font-mono text-xs">{JSON.stringify(value)}</span>
-      <span className="text-xs text-gray-300 ml-auto">{badge}</span>
+    <div className="flex flex-col gap-1 py-2 border-b last:border-0 sm:flex-row sm:items-start sm:gap-3">
+      <span className="text-sm text-gray-500 sm:w-48 sm:flex-shrink-0">{label}</span>
+      <span className="text-sm text-gray-400 font-mono text-xs break-all">{JSON.stringify(value)}</span>
+      <span className="text-xs text-gray-300 sm:ml-auto">{badge}</span>
     </div>
   )
 }
@@ -26,10 +26,10 @@ function ReadOnlyField({ label, value, badge = 'engineer-only' }) {
 function ComplianceField({ label, value }) {
   const display = Array.isArray(value) ? value.join(', ') : value;
   return (
-    <div className="flex items-start gap-3 py-2 border-b last:border-0">
-      <span className="text-sm text-gray-500 w-48 flex-shrink-0">{label}</span>
+    <div className="flex flex-col gap-1 py-2 border-b last:border-0 sm:flex-row sm:items-start sm:gap-3">
+      <span className="text-sm text-gray-500 sm:w-48 sm:flex-shrink-0">{label}</span>
       <span className="text-sm text-gray-400 font-mono text-xs break-all">{display}</span>
-      <span className="text-xs text-amber-400 ml-auto whitespace-nowrap">compliance-owned</span>
+      <span className="text-xs text-amber-400 sm:ml-auto sm:whitespace-nowrap">compliance-owned</span>
     </div>
   )
 }
@@ -117,18 +117,18 @@ export default function ConfigTab({ activeSection = 'routing' }) {
 
   return (
     <div>
-      <div className="flex items-center justify-between mb-6">
+      <div className="mb-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
         <div>
           <h2 className="text-lg font-semibold text-gray-900">Pipeline Configuration</h2>
           <p className="text-sm text-gray-500 mt-0.5">Changes apply to all subsequent runs.</p>
         </div>
-        <div className="flex items-center gap-3">
+        <div className="flex flex-wrap items-center gap-3">
           {saved && <span className="text-sm text-green-600">✓ Saved</span>}
           {error && <span className="text-sm text-red-600">{error}</span>}
           <button
             onClick={save}
             disabled={saving}
-            className="px-4 py-2 bg-stone-950 text-white rounded-lg text-sm font-medium hover:bg-black disabled:opacity-50 transition-colors"
+            className="w-full px-4 py-2 bg-stone-950 text-white rounded-lg text-sm font-medium hover:bg-black disabled:opacity-50 transition-colors sm:w-auto"
           >
             {saving ? 'Saving…' : 'Save Changes'}
           </button>
@@ -152,7 +152,7 @@ export default function ConfigTab({ activeSection = 'routing' }) {
                   <p className="text-xs text-gray-400 mb-1">{desc}</p>
                   <input type="number" step={step} min={min} max={max} value={val}
                     onChange={e => updatePath(path, parseFloat(e.target.value))}
-                    className="w-32 border rounded px-2 py-1 text-sm" />
+                    className="w-full max-w-[12rem] border rounded px-2 py-1 text-sm" />
                 </div>
               )
             })}
@@ -161,21 +161,21 @@ export default function ConfigTab({ activeSection = 'routing' }) {
               <p className="text-xs text-gray-400 mb-1">Leads below this are routed to Triage without scoring.</p>
               <input type="number" step={50000} value={h.revenue.hard_gate_min_gbp}
                 onChange={e => updatePath('heuristics.revenue.hard_gate_min_gbp', parseInt(e.target.value))}
-                className="w-48 border rounded px-2 py-1 text-sm" />
+                className="w-full max-w-[14rem] border rounded px-2 py-1 text-sm" />
             </div>
             <div>
               <label className="text-sm text-gray-700 font-medium block mb-1">Revenue ceiling (£)</label>
               <p className="text-xs text-gray-400 mb-1">Leads above this are routed to Manual Review — outside standard product range.</p>
               <input type="number" step={1000000} value={h.revenue.max_revenue_gbp}
                 onChange={e => updatePath('heuristics.revenue.max_revenue_gbp', parseInt(e.target.value))}
-                className="w-48 border rounded px-2 py-1 text-sm" />
+                className="w-full max-w-[14rem] border rounded px-2 py-1 text-sm" />
             </div>
             <div>
               <label className="text-sm text-gray-700 font-medium block mb-1">Minimum trading years</label>
               <p className="text-xs text-gray-400 mb-1">Companies below this age are routed to Manual Review for alternate assessment.</p>
               <input type="number" step={0.5} min={0} value={h.company_age_years.min_trading_years}
                 onChange={e => updatePath('heuristics.company_age_years.min_trading_years', parseFloat(e.target.value))}
-                className="w-32 border rounded px-2 py-1 text-sm" />
+                className="w-full max-w-[12rem] border rounded px-2 py-1 text-sm" />
             </div>
           </div>
         </Section>
@@ -196,7 +196,7 @@ export default function ConfigTab({ activeSection = 'routing' }) {
                   <p className="text-xs text-gray-400 mb-1">{desc}</p>
                   <input type="number" step={0.05} min={0} max={1} value={val}
                     onChange={e => updatePath(path, parseFloat(e.target.value))}
-                    className="w-32 border rounded px-2 py-1 text-sm" />
+                    className="w-full max-w-[12rem] border rounded px-2 py-1 text-sm" />
                 </div>
               )
             })}
@@ -209,7 +209,7 @@ export default function ConfigTab({ activeSection = 'routing' }) {
             <p className="text-xs text-gray-400 mb-1">Applied to revenue contribution only. 0.85 = 15% discount for self-reported revenue.</p>
             <input type="number" step={0.05} min={0} max={1} value={h.unverified_revenue_multiplier}
               onChange={e => updatePath('heuristics.unverified_revenue_multiplier', parseFloat(e.target.value))}
-              className="w-32 border rounded px-2 py-1 text-sm" />
+              className="w-full max-w-[12rem] border rounded px-2 py-1 text-sm" />
           </div>
         </Section>
       </>}
@@ -219,10 +219,10 @@ export default function ConfigTab({ activeSection = 'routing' }) {
         <Section title="Good Sectors" description="Sectors that receive full credit in ICP scoring.">
           <div className="space-y-2">
             {lc.good_sectors.map((s, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex items-start gap-2">
                 <input value={s} onChange={e => updateListField('llm_context.good_sectors', i, e.target.value)}
                   className="flex-1 border rounded px-2 py-1 text-sm" />
-                <button onClick={() => removeFromList('llm_context.good_sectors', i)} className="text-red-400 hover:text-red-600 px-2">✕</button>
+                <button onClick={() => removeFromList('llm_context.good_sectors', i)} className="shrink-0 text-red-400 hover:text-red-600 px-2">✕</button>
               </div>
             ))}
             <button onClick={() => addToList('llm_context.good_sectors')} className="text-sm text-stone-700 hover:text-black">+ Add sector</button>
@@ -232,10 +232,10 @@ export default function ConfigTab({ activeSection = 'routing' }) {
         <Section title="Poor Sectors" description="Sectors that score zero in ICP scoring.">
           <div className="space-y-2">
             {lc.poor_sectors.map((s, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex items-start gap-2">
                 <input value={s} onChange={e => updateListField('llm_context.poor_sectors', i, e.target.value)}
                   className="flex-1 border rounded px-2 py-1 text-sm" />
-                <button onClick={() => removeFromList('llm_context.poor_sectors', i)} className="text-red-400 hover:text-red-600 px-2">✕</button>
+                <button onClick={() => removeFromList('llm_context.poor_sectors', i)} className="shrink-0 text-red-400 hover:text-red-600 px-2">✕</button>
               </div>
             ))}
             <button onClick={() => addToList('llm_context.poor_sectors')} className="text-sm text-stone-700 hover:text-black">+ Add sector</button>
@@ -246,7 +246,7 @@ export default function ConfigTab({ activeSection = 'routing' }) {
           <Section title="SIC Code → Sector Mapping" description="Maps Companies House SIC codes to sector names used in scoring.">
             <div className="space-y-2">
               {Object.entries(config.sic_to_sector).map(([sic, sector]) => (
-                <div key={sic} className="flex gap-2 items-center">
+                <div key={sic} className="flex items-center gap-2">
                   <span className="text-sm font-mono text-gray-500 w-16 flex-shrink-0">{sic}</span>
                   <input value={sector}
                     onChange={e => {
@@ -269,10 +269,10 @@ export default function ConfigTab({ activeSection = 'routing' }) {
         <Section title="Red Flag Examples" description="Patterns the LLM uses to detect risk signals in lead notes.">
           <div className="space-y-2">
             {lc.red_flag_examples.map((f, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex items-start gap-2">
                 <input value={f} onChange={e => updateListField('llm_context.red_flag_examples', i, e.target.value)}
                   className="flex-1 border rounded px-2 py-1 text-sm" />
-                <button onClick={() => removeFromList('llm_context.red_flag_examples', i)} className="text-red-400 hover:text-red-600 px-2">✕</button>
+                <button onClick={() => removeFromList('llm_context.red_flag_examples', i)} className="shrink-0 text-red-400 hover:text-red-600 px-2">✕</button>
               </div>
             ))}
             <button onClick={() => addToList('llm_context.red_flag_examples')} className="text-sm text-stone-700 hover:text-black">+ Add example</button>
@@ -282,10 +282,10 @@ export default function ConfigTab({ activeSection = 'routing' }) {
         <Section title="Prohibited Output Phrases" description="Phrases that must never appear in generated emails (fast regex check).">
           <div className="space-y-2">
             {h.prohibited_phrases_regex.map((p, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex items-start gap-2">
                 <input value={p} onChange={e => updateListField('heuristics.prohibited_phrases_regex', i, e.target.value)}
                   className="flex-1 border rounded px-2 py-1 text-sm font-mono text-xs" />
-                <button onClick={() => removeFromList('heuristics.prohibited_phrases_regex', i)} className="text-red-400 hover:text-red-600 px-2">✕</button>
+                <button onClick={() => removeFromList('heuristics.prohibited_phrases_regex', i)} className="shrink-0 text-red-400 hover:text-red-600 px-2">✕</button>
               </div>
             ))}
             <button onClick={() => addToList('heuristics.prohibited_phrases_regex')} className="text-sm text-stone-700 hover:text-black">+ Add phrase</button>
@@ -295,10 +295,10 @@ export default function ConfigTab({ activeSection = 'routing' }) {
         <Section title="Prohibited Output Examples" description="Tone violations shown to the LLM compliance reviewer as examples of what to catch.">
           <div className="space-y-2">
             {(lc.prohibited_output_examples || []).map((p, i) => (
-              <div key={i} className="flex gap-2">
+              <div key={i} className="flex items-start gap-2">
                 <input value={p} onChange={e => updateListField('llm_context.prohibited_output_examples', i, e.target.value)}
                   className="flex-1 border rounded px-2 py-1 text-sm" />
-                <button onClick={() => removeFromList('llm_context.prohibited_output_examples', i)} className="text-red-400 hover:text-red-600 px-2">✕</button>
+                <button onClick={() => removeFromList('llm_context.prohibited_output_examples', i)} className="shrink-0 text-red-400 hover:text-red-600 px-2">✕</button>
               </div>
             ))}
             <button onClick={() => addToList('llm_context.prohibited_output_examples')} className="text-sm text-stone-700 hover:text-black">+ Add example</button>
@@ -309,18 +309,18 @@ export default function ConfigTab({ activeSection = 'routing' }) {
       {/* ── MESSAGING ── */}
       {show('messaging') && <>
         <Section title="Email Word Count" description="Bounds enforced in both the generation prompt and the structural safety check — one source of truth.">
-          <div className="flex gap-6">
+          <div className="flex flex-col gap-4 sm:flex-row sm:gap-6">
             <div>
               <label className="text-sm text-gray-700 font-medium block mb-1">Minimum words</label>
               <input type="number" step={5} min={50} value={h.email_word_count?.min ?? 110}
                 onChange={e => updatePath('heuristics.email_word_count.min', parseInt(e.target.value))}
-                className="w-24 border rounded px-2 py-1 text-sm" />
+                className="w-full max-w-[10rem] border rounded px-2 py-1 text-sm" />
             </div>
             <div>
               <label className="text-sm text-gray-700 font-medium block mb-1">Maximum words</label>
               <input type="number" step={5} min={50} value={h.email_word_count?.max ?? 170}
                 onChange={e => updatePath('heuristics.email_word_count.max', parseInt(e.target.value))}
-                className="w-24 border rounded px-2 py-1 text-sm" />
+                className="w-full max-w-[10rem] border rounded px-2 py-1 text-sm" />
             </div>
           </div>
         </Section>

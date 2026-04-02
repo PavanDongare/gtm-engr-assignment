@@ -35,7 +35,7 @@ function ScoreBadge({ score }) {
 function PendingRow({ result }) {
   return (
     <div className="border rounded-lg bg-white shadow-sm mb-3 opacity-60">
-      <div className="px-4 py-3 flex items-center justify-between">
+      <div className="flex flex-col gap-2 px-4 py-3 sm:flex-row sm:items-center sm:justify-between">
         <div className="flex items-center gap-3">
           <div className="w-3 h-3 rounded-full bg-blue-400 animate-pulse" />
           <div>
@@ -65,11 +65,11 @@ export default function LeadCard({ result, runId, onOverride }) {
   return (
     <div className={`border rounded-lg bg-white shadow-sm mb-3 ${isSkipped ? 'opacity-60' : ''}`}>
       <button
-        className="w-full text-left px-4 py-3 flex items-center justify-between hover:bg-gray-50 transition-colors"
+        className="w-full px-4 py-3 text-left hover:bg-gray-50 transition-colors"
         onClick={() => setExpanded(e => !e)}
       >
-        <div className="flex items-center gap-3 flex-1 min-w-0">
-          <div className="min-w-0">
+        <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+          <div className="min-w-0 flex-1">
             <div className="flex items-center gap-2 flex-wrap">
               <span className="font-medium text-gray-900">{result.company_name}</span>
               <span className="text-xs text-gray-400">{result.id}</span>
@@ -97,35 +97,35 @@ export default function LeadCard({ result, runId, onOverride }) {
               ))}
             </div>
           </div>
-        </div>
-        <div className="flex items-center gap-4 ml-4 flex-shrink-0">
-          {!isSkipped && (
-            <button
-              type="button"
-              onClick={(e) => {
-                e.stopPropagation()
-                setExpanded(true)
-                setShowJson(v => !v)
-              }}
-              className={`rounded border px-2 py-1 text-[11px] font-medium transition-colors ${
-                showJson
-                  ? 'border-stone-300 bg-stone-900 text-white'
-                  : 'border-stone-200 bg-white text-stone-600 hover:bg-stone-100 hover:text-stone-900'
-              }`}
+          <div className="flex items-center justify-between gap-4 sm:ml-4 sm:flex-shrink-0">
+            {!isSkipped && (
+              <button
+                type="button"
+                onClick={(e) => {
+                  e.stopPropagation()
+                  setExpanded(true)
+                  setShowJson(v => !v)
+                }}
+                className={`rounded border px-2 py-1 text-[11px] font-medium transition-colors ${
+                  showJson
+                    ? 'border-stone-300 bg-stone-900 text-white'
+                    : 'border-stone-200 bg-white text-stone-600 hover:bg-stone-100 hover:text-stone-900'
+                }`}
+              >
+                API JSON
+              </button>
+            )}
+            <div className="text-left sm:text-right">
+              <div className="text-xs text-gray-400">ICP Score</div>
+              <ScoreBadge score={result.icp_score} />
+            </div>
+            <svg
+              className={`w-4 h-4 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
+              fill="none" viewBox="0 0 24 24" stroke="currentColor"
             >
-              API JSON
-            </button>
-          )}
-          <div className="text-right">
-            <div className="text-xs text-gray-400">ICP Score</div>
-            <ScoreBadge score={result.icp_score} />
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
+            </svg>
           </div>
-          <svg
-            className={`w-4 h-4 text-gray-400 transition-transform ${expanded ? 'rotate-180' : ''}`}
-            fill="none" viewBox="0 0 24 24" stroke="currentColor"
-          >
-            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-          </svg>
         </div>
       </button>
 

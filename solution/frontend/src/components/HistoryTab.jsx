@@ -46,10 +46,10 @@ export default function HistoryTab() {
   )
 
   return (
-    <div className="flex gap-6">
-      <div className="w-72 flex-shrink-0">
+    <div className="flex flex-col gap-6 lg:flex-row">
+      <div className="lg:w-72 lg:flex-shrink-0">
         <h3 className="text-sm font-semibold text-gray-500 uppercase tracking-wide mb-3">Past Runs</h3>
-        <div className="space-y-2">
+        <div className="flex gap-3 overflow-x-auto pb-1 lg:block lg:space-y-2 lg:overflow-visible lg:pb-0">
           {runs.map(run => {
             const id = run.run_id || run.id
             const isSelected = selectedRun && (selectedRun.run_id || selectedRun.id) === id
@@ -57,11 +57,11 @@ export default function HistoryTab() {
               <button
                 key={id}
                 onClick={() => selectRun(run)}
-                className={`w-full text-left rounded-md border p-3 transition-colors ${isSelected ? 'border-stone-300 bg-stone-100' : 'border-gray-200 bg-white hover:bg-gray-50'}`}
+                className={`min-w-[15rem] shrink-0 text-left rounded-md border p-3 transition-colors lg:w-full lg:min-w-0 ${isSelected ? 'border-stone-300 bg-stone-100' : 'border-gray-200 bg-white hover:bg-gray-50'}`}
               >
                 <div className="text-xs text-gray-400 font-mono">{id.slice(0, 8)}…</div>
                 <div className="text-sm font-medium mt-1">{formatDate(run.created_at)}</div>
-                <div className="flex items-center gap-2 mt-1">
+                <div className="mt-1 flex flex-wrap items-center gap-2">
                   <span className={`text-xs px-1.5 py-0.5 rounded ${
                     run.status === 'completed' ? 'bg-green-100 text-green-700' :
                     run.status === 'failed' ? 'bg-red-100 text-red-700' :
