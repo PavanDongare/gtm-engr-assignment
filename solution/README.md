@@ -207,16 +207,16 @@ Red flags detected in the notes route to Manual Review regardless of ICP score. 
 
 ### Why the Pipeline is Asynchronous
 
-Each lead makes between 1 and 4 LLM calls depending on how far it progresses. Holding an HTTP connection open while processing 10 leads is impractical — at 2–15 seconds per call, a synchronous endpoint would routinely timeout.
+Each lead makes between 1 and 4 LLM calls depending on how far it progresses. Holding one HTTP request open while processing a full batch is impractical — at 2–15 seconds per call, a synchronous endpoint would routinely timeout.
 
-The brief asks for a single `POST` entrypoint. The implementation keeps that simple API surface, but treats the request as the start of a longer-running job rather than forcing the client to wait for the whole batch. `POST /runs` returns a run ID immediately with HTTP 202. The pipeline runs in the background, writing each lead's result to the database as it completes. The frontend polls `GET /runs/:id` every 2 seconds so lead cards populate incrementally instead of waiting for the slowest LLM call in the batch. A partial run is recoverable: if the server crashes mid-run, completed results are already persisted.
+The API keeps one primary write path for starting the workflow: `POST /runs`. That call creates a run, returns HTTP 202 immediately, and lets the backend continue processing in the background. `GET /runs/:id` gives the UI a stable way to read progress and results as they are persisted. This keeps the main interaction simple while making the system practical to operate: the job can continue if the page refreshes, completed leads appear incrementally, and partial results survive a server restart.
 
 The efficiency improvement is twofold:
 
 - **Concurrency is used** so independent leads do not wait on each other unnecessarily.
 - **Concurrency is capped** (`llm_concurrency_limit`, default `3`) so the system does not fan out dozens of simultaneous LLM calls and immediately run into provider rate limits or unstable latency.
 
-If this had been implemented as one synchronous `POST /run` that waited for the final response, even a moderate batch would produce poor UX and unreliable request times. The current shape keeps the API simple while making the user experience practical.
+If this had been implemented as one synchronous request that waited for the final response, even a moderate batch would produce poor UX and unreliable request times. The current shape keeps the API small while fitting the behavior of a long-running workflow.
 
 ### Safety and Compliance
 
@@ -406,9 +406,9 @@ Every lead result in `GET /runs/:id → results[]`:
 
 ---
 
-### 🚀 What was added beyond the brief — and why
+### Additional Implementation Choices
 
-The brief asked for a "small, runnable service" and noted a static HTML page was sufficient for operator inspection. The extras below were added to make the solution genuinely complete and self-contained:
+The brief asked for a small runnable service and a simple way for an operator to inspect outputs. The components below are all in support of that same workflow:
 
 | Addition | Why |
 |---|---|
