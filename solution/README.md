@@ -209,7 +209,7 @@ Red flags detected in the notes route to Manual Review regardless of ICP score. 
 
 Each lead makes between 1 and 4 LLM calls depending on how far it progresses. Holding one HTTP request open while processing a full batch is impractical — at 2–15 seconds per call, a synchronous endpoint would routinely timeout.
 
-The API keeps one primary write path for starting the workflow: `POST /runs`. That call creates a run, returns HTTP 202 immediately, and lets the backend continue processing in the background. `GET /runs/:id` gives the UI a stable way to read progress and results as they are persisted. This keeps the main interaction simple while making the system practical to operate: the job can continue if the page refreshes, completed leads appear incrementally, and partial results survive a server restart.
+The API keeps one primary write path for starting the workflow: `POST /runs`. That call creates a run, returns HTTP 202 immediately, and lets the backend continue processing in the background. `GET /runs/:id` gives the UI a stable way to read progress and results as they are persisted. This keeps the main interaction simple while making the system practical to operate: the job continues if the page refreshes, and persisted runs remain available through the history view even if the active Run tab is no longer attached to the in-flight run.
 
 The efficiency improvement is twofold:
 
