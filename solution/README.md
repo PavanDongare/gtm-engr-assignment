@@ -240,6 +240,7 @@ The UI currently has two distinct operational views:
 - `Latest Leads` is the current-state view, showing the latest stored result per lead ID.
 
 The latest-leads view is implemented now because the stored `decision_log`, flags, and score breakdown are usually enough to understand why a lead passed or failed. Full config versioning is still future scope: each run already stores a `config_hash`, but not a full config snapshot or numbered config version.
+For aggregated monitoring of the primary metric over time, the next UI addition should be an analytics view over the existing Postgres data rather than separate observability infrastructure. The underlying data is already persisted per lead and per run; what is missing is a simple aggregated view for operators.
 
 ### Failure Modes
 
@@ -256,6 +257,7 @@ The latest-leads view is implemented now because the stored `decision_log`, flag
 
 ### What Would Come Next
 
+- **Lightweight analytics view in the existing UI** — per-lead decisions and run history are already persisted in Postgres, so the next step is an aggregated operator view rather than new infrastructure. This should show routing distribution over time, Manual Review rate, safety pass/fail rate, average ICP score per run, and red-flag detection rate.
 - **Live Companies House integration** — the enrichment module is isolated; swapping the stub for a real API is a one-file change. This unlocks director change checks and real-time company status.
 - **Full config versioning / snapshots** — runs already store a `config_hash`. The next step is storing explicit config versions or full config snapshots so historical results and the `Latest Leads` view can show the exact config that produced a decision.
 - **Push-based progress updates instead of polling** — the current UI polls because it is the simplest reliable review-time implementation. At larger scale, the backend should publish run progress via Server-Sent Events or WebSockets so the frontend is notified as leads complete rather than repeatedly polling `GET /runs/:id`.
